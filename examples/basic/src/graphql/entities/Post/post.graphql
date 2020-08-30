@@ -1,0 +1,7 @@
+type Post {
+  author: User!
+}
+
+extend type Query {
+  randomPost: Post
+}

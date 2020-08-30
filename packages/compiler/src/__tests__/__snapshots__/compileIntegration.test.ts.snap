@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compiler basic regression test: file contents 1`] = `
+"// @gqle/generated
+import { Maybe } from \\"@gqle/graphql-entity/dist/prelude\\";
+
+
+/*
+ * Definitions
+ */
+
+export interface User {
+  name: string;
+}
+
+
+/*
+ * Entities
+ */
+
+export type UserEntity = User
+
+
+"
+`;
+
+exports[`compiler basic regression test: file contents 2`] = `
+"// @gqle/generated
+import { Awaitable, Maybe } from \\"@gqle/graphql-entity/dist/prelude\\";
+import { createEntityServer as baseCreateEntityServer } from \\"@gqle/graphql-entity\\";
+import { User as User } from \\"entity\\";
+
+
+/*
+ * Entities
+ */
+
+export interface Entities {
+  User: User;
+}
+
+
+/*
+ * Query
+ */
+
+export interface Query {
+  getUser(): Awaitable<User>;
+}
+
+
+/*
+ * Aliases
+ */
+
+export type QueryEntity = Query
+
+
+/*
+ * Server
+ */
+
+export const createEntityServer = (opts: { Query: QueryEntity }) =>
+  baseCreateEntityServer<QueryEntity>(opts);
+
+"
+`;
+
+exports[`compiler basic regression test: file path 1`] = `"/entity.ts"`;
+
+exports[`compiler basic regression test: file path 2`] = `"/"`;
