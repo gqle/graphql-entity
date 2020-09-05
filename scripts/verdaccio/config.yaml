@@ -1,0 +1,29 @@
+storage: .verdaccio-cache
+
+uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
+    cache: true
+
+packages:
+  # Don't proxy @gqle packages to npm
+  '@gqle/*':
+    access: $all
+    publish: $all
+
+  '@*/*':
+    access: $all
+    publish: $all
+    proxy: npmjs
+
+  '**':
+    access: $all
+    publish: $all
+    proxy: npmjs
+
+middlewares:
+  audit:
+    enabled: true
+
+logs:
+  - { type: stdout, format: pretty, level: trace }

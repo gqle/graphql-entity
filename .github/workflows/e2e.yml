@@ -12,6 +12,8 @@ jobs:
         image: verdaccio/verdaccio
         ports:
           - 4873:4873
+        volumes:
+          - /scripts/verdaccio:/verdaccio/conf"
 
     steps:
       - uses: actions/checkout@v2
