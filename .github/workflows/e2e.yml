@@ -1,0 +1,24 @@
+name: End-to-end CI
+
+on: [push]
+
+jobs:
+  yarn:
+    name: Publish check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+      - name: Install dependencies
+        run: yarn install --pure-lockfile
+      - name: Build packages
+        run: yarn run build
+      - name: Run verdaccio in the background
+        run: |
+          nohup verdaccio &
+      - name: Publish packages in the local instance
+        run: ./scripts/publish-local
