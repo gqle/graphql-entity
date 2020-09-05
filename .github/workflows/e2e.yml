@@ -22,4 +22,4 @@ jobs:
       - name: Build packages
         run: yarn run build
       - name: Publish packages in the local instance
-        run: scripts/publish-local
+        run: ./scripts/publish-local.sh
