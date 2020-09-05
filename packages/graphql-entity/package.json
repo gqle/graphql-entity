@@ -5,7 +5,7 @@
   "license": "MIT",
   "bugs": "https://github.com/gqle/graphql-entity/issues",
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=10.0.0"
   },
   "main": "dist/",
   "types": "dist/index.d.ts",
