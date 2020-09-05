@@ -7,6 +7,10 @@ jobs:
     name: Publish check
     runs-on: ubuntu-latest
 
+    services:
+      verdaccio:
+        image: verdaccio/verdaccio
+
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js
@@ -17,8 +21,5 @@ jobs:
         run: yarn install --pure-lockfile
       - name: Build packages
         run: yarn run build
-      - name: Run verdaccio in the background
-        run: |
-          nohup verdaccio &
       - name: Publish packages in the local instance
-        run: ./scripts/publish-local
+        run: scripts/publish-local
