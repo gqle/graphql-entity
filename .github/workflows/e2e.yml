@@ -10,6 +10,8 @@ jobs:
     services:
       verdaccio:
         image: verdaccio/verdaccio
+        ports:
+          - 4873:4873
 
     steps:
       - uses: actions/checkout@v2
