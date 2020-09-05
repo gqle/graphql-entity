@@ -1,3 +1,9 @@
+# Exit the script on any command with non 0 return code
+set -e
+
+# Echo every command being executed
+set -x
+
 custom_registry_url=http://localhost:4873
 original_npm_registry_url=`npm get registry`
 original_yarn_registry_url=`yarn config get registry`
