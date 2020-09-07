@@ -1,0 +1,25 @@
+name: End-to-end CI
+
+on: [push]
+
+jobs:
+  yarn:
+    name: End-to-end test
+    runs-on: ubuntu-latest
+
+    services:
+      verdaccio:
+        image: verdaccio/verdaccio
+        ports:
+          - 4873:4873
+        volumes:
+          - /scripts/verdaccio:/verdaccio/conf"
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+      - name: Run e2e test
+        run: ./scripts/e2e.sh
