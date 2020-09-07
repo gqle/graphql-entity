@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   yarn:
-    name: Publish
+    name: End-to-end test
     runs-on: ubuntu-latest
 
     services:
@@ -21,5 +21,5 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 10.x
-      - name: Run publish e2e
-        run: ./scripts/e2e-publish.sh
+      - name: Run e2e test
+        run: ./scripts/e2e.sh

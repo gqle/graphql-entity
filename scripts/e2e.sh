@@ -27,6 +27,28 @@ yarn run build
 
 ./scripts/exec.sh npm publish
 
+# Create a test application
+mkdir test
+cp examples/basic/package.json test/
+cp examples/basic/tsconfig.json test/
+cp examples/basic/gqle.config.js test/
+cp -r examples/basic/src test/
+
+# Remove commited generated files from the test application
+find test/src -type d -name __generated__ -prune -exec rm -rf {} \;
+
+# Test the application
+cd test
+
+# Install dependencies from the local instance
+yarn install
+
+# Run graphql-entity compilation
+yarn compile
+
+# Ensure build output works
+node ../node_modules/.bin/tsc .
+
 # Restore the original NPM and Yarn registry URLs
 npm set registry "$original_npm_registry_url"
 yarn config set registry "$original_yarn_registry_url"
