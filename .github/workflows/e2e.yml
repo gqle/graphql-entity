@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   yarn:
-    name: Publish check
+    name: Publish
     runs-on: ubuntu-latest
 
     services:
@@ -21,9 +21,5 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 10.x
-      - name: Install dependencies
-        run: yarn install --pure-lockfile
-      - name: Build packages
-        run: yarn run build
-      - name: Publish packages in the local instance
-        run: ./scripts/publish-local.sh
+      - name: Run publish e2e
+        run: ./scripts/e2e-publish.sh
