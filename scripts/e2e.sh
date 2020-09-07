@@ -30,7 +30,7 @@ yarn run build
 # Create a test application
 mkdir test
 cp examples/basic/package.json test/
-cp examples/basic/tsconfig.json test/
+cp examples/basic/tsconfig.test.json test/tsconfig.json
 cp examples/basic/gqle.config.js test/
 cp -r examples/basic/src test/
 
@@ -47,7 +47,7 @@ yarn install
 yarn compile
 
 # Ensure build output works
-node ../node_modules/.bin/tsc .
+node ../node_modules/.bin/tsc -p tsconfig.json
 
 # Restore the original NPM and Yarn registry URLs
 npm set registry "$original_npm_registry_url"
