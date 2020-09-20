@@ -1,6 +1,6 @@
 import { AbsolutePath } from '@gqle/shared'
 import { EntityDocument } from './types'
-import { Query } from './repr/Query'
+import { RootExtension, RootExtensionKind } from './repr'
 import { TSWriter } from './writer/TSWriter'
 
 const findDocumentContainingType = ({
@@ -25,13 +25,13 @@ const findDocumentContainingType = ({
 
 export interface PrintResultsParams {
   documents: EntityDocument[]
-  queries: Query[]
+  rootExtensions: RootExtension[]
   rootOutputPath: AbsolutePath
 }
 
 export const printResults = ({
   documents,
-  queries,
+  rootExtensions,
   rootOutputPath,
 }: PrintResultsParams): TSWriter => {
   const writer = TSWriter.create()
@@ -109,21 +109,21 @@ export const printResults = ({
     values: entityValues,
   })
 
-  // Print query type
-  const querySection = file.section('Query')
+  // Print root type
+  const querySection = file.section('Root')
   querySection.addInterface({
-    name: 'Query',
-    values: queries.map((query) => [`${query.name}()`, `Awaitable<${query.type.print()}>`]),
+    name: 'Root',
+    values: rootExtensions.map((e) => [`${e.name}()`, `Awaitable<${e.type.print()}>`]),
   })
 
   // Add entity aliases
   const aliases = file.section('Aliases')
-  aliases.addRaw('export type QueryEntity = Query')
+  aliases.addRaw('export type RootEntity = Root')
 
   // Add createEntityServer alias
   const server = file.section('Server')
   server.addRaw(
-    'export const createEntityServer = (opts: { Query: QueryEntity }) =>\n  baseCreateEntityServer<QueryEntity>(opts);'
+    'export const createEntityServer = (opts: { root: RootEntity }) =>\n  baseCreateEntityServer<RootEntity>(opts);'
   )
 
   return writer

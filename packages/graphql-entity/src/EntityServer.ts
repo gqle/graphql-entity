@@ -1,22 +1,22 @@
 import { GraphQLSchema, graphql } from 'graphql'
 import { loadSchemaByConfig } from './utils/loadSchemaByConfig'
 
-export interface EntityServerOptions<TQuery = any> {
+export interface EntityServerOptions<TRoot = any> {
   schema: GraphQLSchema
-  Query: TQuery
+  root: TRoot
 }
 
-export interface CreateEntityServerOptions<TQuery = any> {
-  Query: TQuery
+export interface CreateEntityServerOptions<TRoot = any> {
+  root: TRoot
 }
 
-export class EntityServer<TQuery = any> {
+export class EntityServer<TRoot = any> {
   private schema: GraphQLSchema
-  private root: TQuery
+  private root: TRoot
 
-  constructor({ schema, Query }: EntityServerOptions) {
+  constructor({ schema, root }: EntityServerOptions) {
     this.schema = schema
-    this.root = Query
+    this.root = root
   }
 
   async query(source: string) {
@@ -24,10 +24,10 @@ export class EntityServer<TQuery = any> {
   }
 }
 
-export const createEntityServer = <TQuery = any>({
-  Query,
+export const createEntityServer = <TRoot = any>({
+  root,
 }: CreateEntityServerOptions): EntityServer => {
   const schema = loadSchemaByConfig()
 
-  return new EntityServer({ schema, Query })
+  return new EntityServer<TRoot>({ schema, root })
 }
