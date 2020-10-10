@@ -2,6 +2,7 @@ import { AbsolutePath } from '@gqle/shared'
 import { EntityDocument } from './types'
 import { RootExtension, RootExtensionKind } from './repr'
 import { TSWriter } from './writer/TSWriter'
+import { TSInterface } from './writer/TSFile'
 
 const findDocumentContainingType = ({
   documents,
@@ -23,20 +24,28 @@ const findDocumentContainingType = ({
   return document
 }
 
+const rootExtensionsToInterface = ({
+  name,
+  extensions,
+}: {
+  name: string
+  extensions: RootExtension[]
+}): TSInterface => {
+  return {
+    name,
+    values: extensions.map((e) => [`${e.name}()`, `Awaitable<${e.type.print()}>`]),
+  }
+}
+
 export interface PrintResultsParams {
   documents: EntityDocument[]
-  rootExtensions: RootExtension[]
   rootOutputPath: AbsolutePath
 }
 
-export const printResults = ({
-  documents,
-  rootExtensions,
-  rootOutputPath,
-}: PrintResultsParams): TSWriter => {
+export const printResults = ({ documents, rootOutputPath }: PrintResultsParams): TSWriter => {
   const writer = TSWriter.create()
 
-  for (const { entities, enums, location } of documents) {
+  for (const { entities, enums, location, rootExtensions } of documents) {
     const file = writer.file(location)
 
     // Add prelude
@@ -76,6 +85,16 @@ export const printResults = ({
     for (const definition of entities) {
       entitySection.addRaw(`export type ${definition.name}Entity = ${definition.name}\n`)
     }
+
+    // Add root-type extensions which this document is responsible for
+    if (rootExtensions.length) {
+      file.addImport({ name: 'Awaitable', path: '@gqle/graphql-entity/dist/prelude' })
+
+      const extensionsSection = file.section('RootExtensions')
+      extensionsSection.addInterface(
+        rootExtensionsToInterface({ name: 'RootExtensions', extensions: rootExtensions })
+      )
+    }
   }
 
   // Print the server root
@@ -110,11 +129,12 @@ export const printResults = ({
   })
 
   // Print root type
+  const rootExtensions = documents.reduce((extensions, doc) => {
+    return extensions.concat(doc.rootExtensions)
+  }, [] as RootExtension[])
+
   const querySection = file.section('Root')
-  querySection.addInterface({
-    name: 'Root',
-    values: rootExtensions.map((e) => [`${e.name}()`, `Awaitable<${e.type.print()}>`]),
-  })
+  querySection.addInterface(rootExtensionsToInterface({ name: 'Root', extensions: rootExtensions }))
 
   // Add entity aliases
   const aliases = file.section('Aliases')

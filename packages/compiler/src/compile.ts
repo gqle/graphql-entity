@@ -11,7 +11,6 @@ export interface CompileParams {
 
 export interface CompileResult {
   documents: EntityDocument[]
-  rootExtensions: RootExtension[]
 }
 
 export const compile = async ({
@@ -19,12 +18,12 @@ export const compile = async ({
   sources,
 }: CompileParams): Promise<CompileResult> => {
   const documents: EntityDocument[] = []
-  const rootExtensions: RootExtension[] = []
 
   // TODO: For each type in our types map, get definitions from the schema
   for (const { document, location } of sources) {
     const entities: Entity[] = []
     const enums: Enum[] = []
+    const rootExtensions: RootExtension[] = []
 
     for (const definition of document.definitions) {
       switch (definition.kind) {
@@ -47,11 +46,11 @@ export const compile = async ({
       entities,
       enums,
       location,
+      rootExtensions,
     })
   }
 
   return {
     documents,
-    rootExtensions,
   }
 }

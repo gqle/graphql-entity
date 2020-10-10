@@ -2,7 +2,7 @@
 
 exports[`compiler basic regression test: file contents 1`] = `
 "// @gqle/generated
-import { Maybe } from \\"@gqle/graphql-entity/dist/prelude\\";
+import { Maybe, Awaitable } from \\"@gqle/graphql-entity/dist/prelude\\";
 
 
 /*
@@ -20,6 +20,15 @@ export interface User {
 
 export type UserEntity = User
 
+
+
+/*
+ * RootExtensions
+ */
+
+export interface RootExtensions {
+  getUser(): Awaitable<User>;
+}
 
 "
 `;
@@ -69,3 +78,77 @@ export const createEntityServer = (opts: { root: RootEntity }) =>
 exports[`compiler basic regression test: file path 1`] = `"/entity.ts"`;
 
 exports[`compiler basic regression test: file path 2`] = `"/"`;
+
+exports[`compiler root extensions: file contents 1`] = `
+"// @gqle/generated
+import { Maybe, Awaitable } from \\"@gqle/graphql-entity/dist/prelude\\";
+
+
+/*
+ * Definitions
+ */
+
+
+/*
+ * Entities
+ */
+
+
+/*
+ * RootExtensions
+ */
+
+export interface RootExtensions {
+  getString(): Awaitable<string>;
+  setString(): Awaitable<string>;
+  onString(): Awaitable<string>;
+}
+
+"
+`;
+
+exports[`compiler root extensions: file contents 2`] = `
+"// @gqle/generated
+import { Awaitable, Maybe } from \\"@gqle/graphql-entity/dist/prelude\\";
+import { createEntityServer as baseCreateEntityServer } from \\"@gqle/graphql-entity\\";
+
+
+/*
+ * Entities
+ */
+
+export interface Entities {
+}
+
+
+/*
+ * Root
+ */
+
+export interface Root {
+  getString(): Awaitable<string>;
+  setString(): Awaitable<string>;
+  onString(): Awaitable<string>;
+}
+
+
+/*
+ * Aliases
+ */
+
+export type RootEntity = Root
+
+
+/*
+ * Server
+ */
+
+export const createEntityServer = (opts: { root: RootEntity }) =>
+  baseCreateEntityServer<RootEntity>(opts);
+
+"
+`;
+
+exports[`compiler root extensions: file path 1`] = `"/entity.ts"`;
+
+exports[`compiler root extensions: file path 2`] = `"/"`;
