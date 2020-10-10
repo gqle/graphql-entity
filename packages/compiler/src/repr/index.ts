@@ -1,5 +1,5 @@
 export * from './Entity'
 export * from './Enum'
-export * from './Query'
+export * from './RootExtension'
 export * from './Type'
 export * from './TypeNode'

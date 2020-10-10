@@ -2,7 +2,7 @@ import { GraphQLSchema } from 'graphql/type'
 import { DocumentNode } from 'graphql/language'
 import { AbsolutePath } from '@gqle/shared'
 import { EntityDocument } from './types'
-import { Entity, Enum, Query } from './repr'
+import { Entity, Enum, RootExtension } from './repr'
 
 export interface CompileParams {
   schema?: GraphQLSchema
@@ -11,7 +11,6 @@ export interface CompileParams {
 
 export interface CompileResult {
   documents: EntityDocument[]
-  queries: Query[]
 }
 
 export const compile = async ({
@@ -19,12 +18,12 @@ export const compile = async ({
   sources,
 }: CompileParams): Promise<CompileResult> => {
   const documents: EntityDocument[] = []
-  const queries: Query[] = []
 
   // TODO: For each type in our types map, get definitions from the schema
   for (const { document, location } of sources) {
     const entities: Entity[] = []
     const enums: Enum[] = []
+    const rootExtensions: RootExtension[] = []
 
     for (const definition of document.definitions) {
       switch (definition.kind) {
@@ -32,10 +31,7 @@ export const compile = async ({
           entities.push(Entity.fromObjectType(definition))
           break
         case 'ObjectTypeExtension':
-          if (definition.name.value === 'Query') {
-            queries.push(...Query.fromQueryExtension(definition))
-          }
-          // TODO: Other extensions
+          rootExtensions.push(...RootExtension.fromObjectTypeExtension(definition))
           break
         case 'EnumTypeDefinition':
           enums.push(Enum.fromEnum(definition))
@@ -50,11 +46,11 @@ export const compile = async ({
       entities,
       enums,
       location,
+      rootExtensions,
     })
   }
 
   return {
     documents,
-    queries,
   }
 }

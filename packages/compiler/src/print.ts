@@ -1,7 +1,8 @@
 import { AbsolutePath } from '@gqle/shared'
 import { EntityDocument } from './types'
-import { Query } from './repr/Query'
+import { RootExtension, RootExtensionKind } from './repr'
 import { TSWriter } from './writer/TSWriter'
+import { TSInterface } from './writer/TSFile'
 
 const findDocumentContainingType = ({
   documents,
@@ -23,20 +24,28 @@ const findDocumentContainingType = ({
   return document
 }
 
+const rootExtensionsToInterface = ({
+  name,
+  extensions,
+}: {
+  name: string
+  extensions: RootExtension[]
+}): TSInterface => {
+  return {
+    name,
+    values: extensions.map((e) => [`${e.name}()`, `Awaitable<${e.type.print()}>`]),
+  }
+}
+
 export interface PrintResultsParams {
   documents: EntityDocument[]
-  queries: Query[]
   rootOutputPath: AbsolutePath
 }
 
-export const printResults = ({
-  documents,
-  queries,
-  rootOutputPath,
-}: PrintResultsParams): TSWriter => {
+export const printResults = ({ documents, rootOutputPath }: PrintResultsParams): TSWriter => {
   const writer = TSWriter.create()
 
-  for (const { entities, enums, location } of documents) {
+  for (const { entities, enums, location, rootExtensions } of documents) {
     const file = writer.file(location)
 
     // Add prelude
@@ -76,6 +85,16 @@ export const printResults = ({
     for (const definition of entities) {
       entitySection.addRaw(`export type ${definition.name}Entity = ${definition.name}\n`)
     }
+
+    // Add root-type extensions which this document is responsible for
+    if (rootExtensions.length) {
+      file.addImport({ name: 'Awaitable', path: '@gqle/graphql-entity/dist/prelude' })
+
+      const extensionsSection = file.section('RootExtensions')
+      extensionsSection.addInterface(
+        rootExtensionsToInterface({ name: 'RootExtensions', extensions: rootExtensions })
+      )
+    }
   }
 
   // Print the server root
@@ -109,21 +128,22 @@ export const printResults = ({
     values: entityValues,
   })
 
-  // Print query type
-  const querySection = file.section('Query')
-  querySection.addInterface({
-    name: 'Query',
-    values: queries.map((query) => [`${query.name}()`, `Awaitable<${query.type.print()}>`]),
-  })
+  // Print root type
+  const rootExtensions = documents.reduce((extensions, doc) => {
+    return extensions.concat(doc.rootExtensions)
+  }, [] as RootExtension[])
+
+  const querySection = file.section('Root')
+  querySection.addInterface(rootExtensionsToInterface({ name: 'Root', extensions: rootExtensions }))
 
   // Add entity aliases
   const aliases = file.section('Aliases')
-  aliases.addRaw('export type QueryEntity = Query')
+  aliases.addRaw('export type RootEntity = Root')
 
   // Add createEntityServer alias
   const server = file.section('Server')
   server.addRaw(
-    'export const createEntityServer = (opts: { Query: QueryEntity }) =>\n  baseCreateEntityServer<QueryEntity>(opts);'
+    'export const createEntityServer = (opts: { root: RootEntity }) =>\n  baseCreateEntityServer<RootEntity>(opts);'
   )
 
   return writer

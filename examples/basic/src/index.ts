@@ -1,4 +1,4 @@
-import { server } from './graphql'
+import { server } from './server'
 
 const main = async () => {
   const { data, errors } = await server.query('query { randomPost { author { name } } }')

@@ -40,7 +40,6 @@ export default class Compile extends Command {
 
     const { files } = printResults({
       documents: compilation.documents,
-      queries: compilation.queries,
       rootOutputPath: config.rootOutputPath,
     })
 

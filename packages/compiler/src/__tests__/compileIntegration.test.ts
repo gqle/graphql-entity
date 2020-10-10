@@ -29,4 +29,27 @@ describe('compiler', () => {
       expect(file.write()).toMatchSnapshot('file contents')
     }
   })
+
+  test('root extensions', async () => {
+    const entitySource = /* GraphQL */ `
+      extend type Query {
+        getString: String!
+      }
+
+      extend type Mutation {
+        setString: String!
+      }
+
+      extend type Subscription {
+        onString: String!
+      }
+    `
+
+    const { files } = await subject(entitySource)
+
+    for (const file of files) {
+      expect(file.filepath.path).toMatchSnapshot('file path')
+      expect(file.write()).toMatchSnapshot('file contents')
+    }
+  })
 })

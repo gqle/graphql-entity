@@ -19,10 +19,10 @@ export interface Entities {
 
 
 /*
- * Query
+ * Root
  */
 
-export interface Query {
+export interface Root {
   randomPost(): Awaitable<Maybe<Post>>;
 }
 
@@ -31,13 +31,13 @@ export interface Query {
  * Aliases
  */
 
-export type QueryEntity = Query
+export type RootEntity = Root
 
 
 /*
  * Server
  */
 
-export const createEntityServer = (opts: { Query: QueryEntity }) =>
-  baseCreateEntityServer<QueryEntity>(opts);
+export const createEntityServer = (opts: { root: RootEntity }) =>
+  baseCreateEntityServer<RootEntity>(opts);
 
