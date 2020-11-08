@@ -8,5 +8,5 @@
     "rootDir": "."
   },
   "include": ["cli/**/*", "compiler/**/*", "lib/**/*", "runtime/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["dist", "./*.d.ts"]
 }
