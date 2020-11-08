@@ -10,6 +10,11 @@ export interface CreateEntityServerOptions<TRoot = any> {
   root: TRoot
 }
 
+export interface RunQueryOptions {
+  query: string
+  variables?: Record<string, unknown>
+}
+
 export class EntityServer<TRoot = any> {
   private schema: GraphQLSchema
   private root: TRoot
@@ -19,8 +24,8 @@ export class EntityServer<TRoot = any> {
     this.root = root
   }
 
-  async run(source: string) {
-    return graphql(this.schema, source, this.root)
+  async run({ query, variables }: RunQueryOptions) {
+    return graphql(this.schema, query, this.root, null, variables)
   }
 }
 

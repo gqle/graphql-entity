@@ -2,6 +2,7 @@ import { dirname } from 'path'
 import { AbsolutePath } from '../../lib/path'
 import { unique } from '../utils/unique'
 import { capsToPascalCase } from '../utils/capsToPascalCase'
+import { withoutLastNewline } from '../../lib/string'
 
 export interface TSImport {
   path: AbsolutePath | string
@@ -13,6 +14,7 @@ export interface TSImport {
 export interface TSInterface {
   name: string
   values: [string, string][]
+  comment?: string
 }
 
 export interface TSEnum {
@@ -52,23 +54,25 @@ export class TSFileSection {
       for (const [key, value] of members) {
         result += `  ${capsToPascalCase(key)} = ${value},\n`
       }
-      // TODO: Don't add multiple newlines for last definition
       result += `}\n\n`
     }
 
-    for (const { name, values } of this.interfaces) {
+    for (const { name, values, comment } of this.interfaces) {
+      if (comment) {
+        result += `// ${comment}\n`
+      }
       result += `export interface ${name} {\n`
       for (const [key, value] of values) {
         result += `  ${key}: ${value};\n`
       }
-      // TODO: Don't add multiple newlines for last interface
       result += `}\n\n`
     }
 
     for (const raw of this.raw) {
-      // TODO: Don't add multiple newlines for last raw
       result += `${raw}\n\n`
     }
+
+    result = withoutLastNewline(result)
 
     return result
   }
@@ -102,9 +106,8 @@ export class TSFile {
     return section
   }
 
-  public write(): string {
-    // write imports
-    let result = '// @gqle/generated\n'
+  public writeImports(): string {
+    let result = ''
 
     const froms = unique(this.imports.map((i) => i.path))
 
@@ -131,6 +134,15 @@ export class TSFile {
         result += `import { ${names} } from "${path}";\n`
       }
     }
+
+    return result
+  }
+
+  public write(): string {
+    // write imports
+    let result = '// @gqle/generated\n'
+
+    result += this.writeImports()
 
     result += '\n'
 

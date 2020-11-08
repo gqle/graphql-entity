@@ -1,5 +1,5 @@
 // @gqle/generated
-import { Maybe, Awaitable } from "graphql-entity/prelude";
+import { Awaitable, Maybe, Resolvable } from "graphql-entity/prelude";
 import { User } from "../../User/__generated__/index";
 
 
@@ -7,10 +7,14 @@ import { User } from "../../User/__generated__/index";
  * Definitions
  */
 
-export interface Post {
-  author: User;
+// Input
+export interface CreatePostAuthorInput {
+  name: string;
 }
 
+export interface Post {
+  author: Resolvable<User>;
+}
 
 /*
  * Entities
@@ -19,12 +23,15 @@ export interface Post {
 export type PostEntity = Post
 
 
-
 /*
  * RootExtensions
  */
 
-export interface RootExtensions {
-  randomPost(): Awaitable<Maybe<Post>>;
+export interface CreatePostParameters {
+  author: CreatePostAuthorInput;
 }
 
+export interface RootExtensions {
+  randomPost: Resolvable<Maybe<Post>>;
+  createPost: Resolvable<Maybe<Post>, CreatePostParameters>;
+}

@@ -1,5 +1,5 @@
 // @gqle/generated
-import { Maybe } from "graphql-entity/prelude";
+import { Awaitable, Maybe, Resolvable } from "graphql-entity/prelude";
 
 
 /*
@@ -7,14 +7,12 @@ import { Maybe } from "graphql-entity/prelude";
  */
 
 export interface User {
-  name: string;
+  name: Resolvable<string>;
 }
-
 
 /*
  * Entities
  */
 
 export type UserEntity = User
-
 
