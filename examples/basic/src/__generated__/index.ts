@@ -1,6 +1,6 @@
 // @gqle/generated
-import { Awaitable, Maybe } from "@gqle/graphql-entity/dist/prelude";
-import { createEntityServer as baseCreateEntityServer } from "@gqle/graphql-entity";
+import { Awaitable, Maybe } from "graphql-entity/prelude";
+import { createEntityServer as baseCreateEntityServer } from "graphql-entity";
 import { Post as Post } from "../entities/Post/__generated__/index";
 import { User as User } from "../entities/User/__generated__/index";
 import { Query as _Query, Mutation as _Mutation } from "../entities/__generated__/index";

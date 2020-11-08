@@ -1,4 +1,4 @@
-import { AbsolutePath } from '@gqle/shared'
+import { AbsolutePath } from '../lib/path'
 import { EntityDocument } from './types'
 import { RootExtension, RootExtensionKind } from './repr'
 import { TSWriter } from './writer/TSWriter'
@@ -49,7 +49,7 @@ export const printResults = ({ documents, rootOutputPath }: PrintResultsParams):
     const file = writer.file(location)
 
     // Add prelude
-    file.addImport({ name: 'Maybe', path: '@gqle/graphql-entity/dist/prelude' })
+    file.addImport({ name: 'Maybe', path: 'graphql-entity/prelude' })
 
     // Add imports for referenced entities
     for (const entity of entities) {
@@ -88,7 +88,7 @@ export const printResults = ({ documents, rootOutputPath }: PrintResultsParams):
 
     // Add root-type extensions which this document is responsible for
     if (rootExtensions.length) {
-      file.addImport({ name: 'Awaitable', path: '@gqle/graphql-entity/dist/prelude' })
+      file.addImport({ name: 'Awaitable', path: 'graphql-entity/prelude' })
 
       const extensionsSection = file.section('RootExtensions')
       extensionsSection.addInterface(
@@ -99,12 +99,12 @@ export const printResults = ({ documents, rootOutputPath }: PrintResultsParams):
 
   // Print the server root
   const file = writer.file(rootOutputPath)
-  file.addImport({ name: 'Awaitable', path: '@gqle/graphql-entity/dist/prelude' })
-  file.addImport({ name: 'Maybe', path: '@gqle/graphql-entity/dist/prelude' })
+  file.addImport({ name: 'Awaitable', path: 'graphql-entity/prelude' })
+  file.addImport({ name: 'Maybe', path: 'graphql-entity/prelude' })
   file.addImport({
     name: 'createEntityServer',
     alias: 'baseCreateEntityServer',
-    path: '@gqle/graphql-entity',
+    path: 'graphql-entity',
   })
 
   // Collect entities

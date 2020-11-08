@@ -1,9 +1,10 @@
 import * as path from 'path'
 import { DocumentNode } from 'graphql/language'
 import { Command } from '@oclif/command'
-import { AbsolutePath, ensureDirectory, Path, writeStringToFile } from '@gqle/shared'
-import { resolveConfig, loadDocumentsFromGraphQLFiles } from '@gqle/graphql-entity'
-import { compile, printResults } from '@gqle/compiler'
+import { AbsolutePath, Path } from '../../lib/path'
+import { ensureDirectory, writeStringToFile } from '../../lib/fs'
+import { resolveConfig, loadDocumentsFromGraphQLFiles } from '../../runtime'
+import { compile, printResults } from '../../compiler'
 
 export default class Compile extends Command {
   static description = 'perform a compilation'

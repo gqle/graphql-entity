@@ -1,6 +1,6 @@
 import { GraphQLSchema } from 'graphql/type'
 import { DocumentNode } from 'graphql/language'
-import { AbsolutePath } from '@gqle/shared'
+import { AbsolutePath } from '../lib/path'
 import { EntityDocument } from './types'
 import { Entity, Enum, RootExtension } from './repr'
 

@@ -6,10 +6,11 @@
     "importHelpers": true,
     "module": "commonjs",
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": ".",
+    "baseUrl": ".",
     "strict": true,
     "target": "es2017"
   },
-  "include": ["src/**/*"],
-  "references": [{ "path": "../shared" }]
+  "include": ["**/*"],
+  "exclude": ["node_modules", "dist"]
 }

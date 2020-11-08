@@ -1,4 +1,4 @@
-import { AbsolutePath } from '@gqle/shared'
+import { AbsolutePath } from '../../lib/path'
 import { getCompilationFiles } from './getCompilationFiles'
 
 const ENTITY_FILE = '/entity.ts'

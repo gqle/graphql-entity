@@ -1,4 +1,4 @@
-import { AbsolutePath } from '@gqle/shared'
+import { AbsolutePath } from '../../lib/path'
 import { parse } from 'graphql'
 import { compile, CompileParams } from '../compile'
 import { printResults } from '../print'

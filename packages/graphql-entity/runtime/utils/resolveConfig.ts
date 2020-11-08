@@ -1,6 +1,6 @@
 import * as path from 'path'
 import * as findUp from 'find-up'
-import { AbsolutePath, Path } from '@gqle/shared'
+import { AbsolutePath, Path } from '../../lib/path'
 import { GqleConfigOptions, GqleResolvedConfig } from '../types'
 
 export const resolveConfig = (): GqleResolvedConfig => {

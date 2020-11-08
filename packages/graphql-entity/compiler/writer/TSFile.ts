@@ -1,5 +1,5 @@
 import { dirname } from 'path'
-import { AbsolutePath } from '@gqle/shared'
+import { AbsolutePath } from '../../lib/path'
 import { unique } from '../utils/unique'
 import { capsToPascalCase } from '../utils/capsToPascalCase'
 

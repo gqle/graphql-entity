@@ -1,4 +1,4 @@
-import { AbsolutePath } from '@gqle/shared'
+import { AbsolutePath } from '../lib/path'
 import { Entity, Enum, RootExtension } from './repr'
 
 export interface EntityDocument {

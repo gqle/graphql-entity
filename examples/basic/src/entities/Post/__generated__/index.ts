@@ -1,5 +1,5 @@
 // @gqle/generated
-import { Maybe, Awaitable } from "@gqle/graphql-entity/dist/prelude";
+import { Maybe, Awaitable } from "graphql-entity/prelude";
 import { User } from "../../User/__generated__/index";
 
 
@@ -21,10 +21,10 @@ export type PostEntity = Post
 
 
 /*
- * Extensions
+ * RootExtensions
  */
 
-export interface Extensions {
+export interface RootExtensions {
   randomPost(): Awaitable<Maybe<Post>>;
 }
 
