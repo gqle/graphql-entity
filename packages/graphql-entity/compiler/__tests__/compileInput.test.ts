@@ -95,6 +95,10 @@ describe('input types', () => {
         age: number;
       }
 
+      export interface RequiresUserParameters {
+        user: User;
+      }
+
       export interface ParentType {
         requiresUser: Resolvable<boolean, RequiresUserParameters>;
       }

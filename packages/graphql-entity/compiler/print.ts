@@ -113,6 +113,10 @@ export const printResults = ({ documents, rootOutputPath }: PrintResultsParams):
     }
 
     for (const definition of entities) {
+      for (const parameters of parametersFromFields({ fields: definition.fields })) {
+        definitions.addInterface(parameters)
+      }
+
       definitions.addInterface(
         fieldsToInterface({
           name: definition.name,
