@@ -1,5 +1,5 @@
 // @gqle/generated
-import { Maybe } from "@gqle/graphql-entity/dist/prelude";
+import { Maybe } from "graphql-entity/prelude";
 
 
 /*
