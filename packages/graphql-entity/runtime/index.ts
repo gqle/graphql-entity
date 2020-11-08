@@ -1,6 +1,1 @@
 export * from './EntityServer'
-export * from './types'
-export * from './utils/loadDocuments'
-export * from './utils/loadDocumentsByConfig'
-export * from './utils/loadSchemaByConfig'
-export * from './utils/resolveConfig'

@@ -1,6 +1,6 @@
 import { loadTypedefsSync } from '@graphql-tools/load'
 import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader'
-import { AbsolutePath } from '../../lib/path'
+import { AbsolutePath } from '../path'
 
 export const loadDocumentsFromGraphQLFiles = (
   path: AbsolutePath | AbsolutePath[]

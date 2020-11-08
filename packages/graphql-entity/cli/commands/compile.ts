@@ -3,7 +3,8 @@ import { DocumentNode } from 'graphql/language'
 import { Command } from '@oclif/command'
 import { AbsolutePath, Path } from '../../lib/path'
 import { ensureDirectory, writeStringToFile } from '../../lib/fs'
-import { resolveConfig, loadDocumentsFromGraphQLFiles } from '../../runtime'
+import { resolveConfig } from '../../lib/config/resolveConfig'
+import { loadDocumentsFromGraphQLFiles } from '../../lib/graphql/loadDocuments'
 import { compile, printResults } from '../../compiler'
 
 export default class Compile extends Command {

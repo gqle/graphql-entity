@@ -1,6 +1,6 @@
 import { GraphQLSchema, DocumentNode } from 'graphql'
 import { buildSchemaFromTypeDefinitions } from '@graphql-tools/schema'
-import { resolveConfig } from './resolveConfig'
+import { resolveConfig } from '../config/resolveConfig'
 import { loadDocumentsFromGraphQLFiles } from './loadDocuments'
 
 export const loadSchemaByConfig = (): GraphQLSchema => {

@@ -1,5 +1,5 @@
 import { GraphQLSchema, graphql } from 'graphql'
-import { loadSchemaByConfig } from './utils/loadSchemaByConfig'
+import { loadSchemaByConfig } from '../lib/graphql/loadSchemaByConfig'
 
 export interface EntityServerOptions<TRoot = any> {
   schema: GraphQLSchema

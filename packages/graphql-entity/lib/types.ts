@@ -1,4 +1,4 @@
-import { AbsolutePath } from '../lib/path'
+import { AbsolutePath } from './path'
 
 export interface GqleConfigOptions {
   documents: string | string[]
