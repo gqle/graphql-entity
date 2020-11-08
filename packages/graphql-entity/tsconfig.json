@@ -2,15 +2,11 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "declaration": true,
     "importHelpers": true,
     "module": "commonjs",
     "outDir": "dist",
-    "rootDir": ".",
-    "baseUrl": ".",
-    "strict": true,
-    "target": "es2017"
+    "rootDir": "."
   },
-  "include": ["**/*"],
+  "include": ["cli/**/*", "compiler/**/*", "lib/**/*", "runtime/**/*"],
   "exclude": ["node_modules", "dist"]
 }
