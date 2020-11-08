@@ -1,4 +1,5 @@
-import { Kind, ObjectTypeExtensionNode } from 'graphql/language'
+import { ObjectTypeExtensionNode } from 'graphql/language'
+import { Field, FieldOptions, Parameter } from './Field'
 import { Type } from './Type'
 
 export enum RootExtensionKind {
@@ -7,24 +8,19 @@ export enum RootExtensionKind {
   Subscription,
 }
 
-export interface RootExtensionOptions {
+export interface RootExtensionOptions extends FieldOptions {
   kind: RootExtensionKind
-  name: string
-  type: Type
 }
 
 /**
  * RootExtension represents an extension of one of the root types: Query, Mutation, Subscription
  */
-export class RootExtension {
+export class RootExtension extends Field {
   kind: RootExtensionKind
-  name: string
-  type: Type
 
-  constructor({ kind, name, type }: RootExtension) {
+  constructor({ kind, name, parameters, type }: RootExtensionOptions) {
+    super({ name, parameters, type })
     this.kind = kind
-    this.name = name
-    this.type = type
   }
 
   static fromObjectTypeExtension(def: ObjectTypeExtensionNode): RootExtension[] {
@@ -41,9 +37,17 @@ export class RootExtension {
     }
 
     return (def.fields ?? []).map((field) => {
+      let parameters: Parameter[] = []
+      if (field.arguments) {
+        parameters = field.arguments.map((argument) => {
+          return [argument.name.value, Type.fromGraphQLType(argument.type)]
+        })
+      }
+
       return new RootExtension({
         kind,
         name: field.name.value,
+        parameters,
         type: Type.fromGraphQLType(field.type),
       })
     })

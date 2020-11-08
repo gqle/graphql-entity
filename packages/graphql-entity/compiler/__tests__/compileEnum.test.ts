@@ -36,10 +36,9 @@ describe('enum types', () => {
       }
 
       export interface User {
-        name: string;
-        role: UserRole;
+        name: Resolvable<string>;
+        role: Resolvable<UserRole>;
       }
-
       "
     `)
   })

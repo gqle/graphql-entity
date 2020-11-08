@@ -1,8 +1,9 @@
 import { AbsolutePath } from '../lib/path'
 import { EntityDocument } from './types'
-import { RootExtension, RootExtensionKind } from './repr'
+import { Field, RootExtension } from './repr'
 import { TSWriter } from './writer/TSWriter'
 import { TSInterface } from './writer/TSFile'
+import { capitalizeInitial } from '../lib/string'
 
 const findDocumentContainingType = ({
   documents,
@@ -24,16 +25,44 @@ const findDocumentContainingType = ({
   return document
 }
 
-const rootExtensionsToInterface = ({
-  name,
-  extensions,
-}: {
-  name: string
-  extensions: RootExtension[]
-}): TSInterface => {
+/**
+ * Get a TSInterface describing parameters for a field
+ */
+const parametersInterface = ({ field }: { field: Field }): TSInterface => {
+  return {
+    name: `${capitalizeInitial(field.name)}Parameters`,
+    values: field.parameters.map(([name, type]) => [name, type.getName()]),
+  }
+}
+
+/**
+ * Get TSInterfaces describing parameters for a list of fields
+ */
+const parametersFromFields = ({ fields }: { fields: Field[] }): TSInterface[] => {
+  const interfaces: TSInterface[] = []
+
+  for (const extension of fields) {
+    if (extension.parameters.length) {
+      interfaces.push(parametersInterface({ field: extension }))
+    }
+  }
+
+  return interfaces
+}
+
+/**
+ * Get a TSInterface encapsulating a list of fields
+ */
+const fieldsToInterface = ({ name, fields }: { name: string; fields: Field[] }): TSInterface => {
   return {
     name,
-    values: extensions.map((e) => [`${e.name}()`, `Awaitable<${e.type.print()}>`]),
+    values: fields.map((field) => {
+      const type = field.parameters.length
+        ? `Resolvable<${field.type.print()}, ${capitalizeInitial(field.name)}Parameters>`
+        : `Resolvable<${field.type.print()}>`
+
+      return [field.name, type]
+    }),
   }
 }
 
@@ -45,11 +74,13 @@ export interface PrintResultsParams {
 export const printResults = ({ documents, rootOutputPath }: PrintResultsParams): TSWriter => {
   const writer = TSWriter.create()
 
-  for (const { entities, enums, location, rootExtensions } of documents) {
+  for (const { entities, enums, inputs, location, rootExtensions } of documents) {
     const file = writer.file(location)
 
     // Add prelude
+    file.addImport({ name: 'Awaitable', path: 'graphql-entity/prelude' })
     file.addImport({ name: 'Maybe', path: 'graphql-entity/prelude' })
+    file.addImport({ name: 'Resolvable', path: 'graphql-entity/prelude' })
 
     // Add imports for referenced entities
     for (const entity of entities) {
@@ -73,11 +104,21 @@ export const printResults = ({ documents, rootOutputPath }: PrintResultsParams):
       })
     }
 
-    for (const definition of entities) {
+    for (const input of inputs) {
       definitions.addInterface({
-        name: definition.name,
-        values: definition.fields.map((field) => [field.name, field.type.print()]),
+        name: input.name,
+        values: input.fields.map((field) => [field.name, field.type.print()]),
+        comment: 'Input',
       })
+    }
+
+    for (const definition of entities) {
+      definitions.addInterface(
+        fieldsToInterface({
+          name: definition.name,
+          fields: definition.fields,
+        })
+      )
     }
 
     // Associate the entity type with the resolved type definition
@@ -88,11 +129,14 @@ export const printResults = ({ documents, rootOutputPath }: PrintResultsParams):
 
     // Add root-type extensions which this document is responsible for
     if (rootExtensions.length) {
-      file.addImport({ name: 'Awaitable', path: 'graphql-entity/prelude' })
-
       const extensionsSection = file.section('RootExtensions')
+
+      for (const parameters of parametersFromFields({ fields: rootExtensions })) {
+        extensionsSection.addInterface(parameters)
+      }
+
       extensionsSection.addInterface(
-        rootExtensionsToInterface({ name: 'RootExtensions', extensions: rootExtensions })
+        fieldsToInterface({ name: 'RootExtensions', fields: rootExtensions })
       )
     }
   }
@@ -101,16 +145,21 @@ export const printResults = ({ documents, rootOutputPath }: PrintResultsParams):
   const file = writer.file(rootOutputPath)
   file.addImport({ name: 'Awaitable', path: 'graphql-entity/prelude' })
   file.addImport({ name: 'Maybe', path: 'graphql-entity/prelude' })
+  file.addImport({ name: 'Resolvable', path: 'graphql-entity/prelude' })
   file.addImport({
     name: 'createEntityServer',
     alias: 'baseCreateEntityServer',
     path: 'graphql-entity',
   })
 
-  // Collect entities
-  for (const { location, entities } of documents) {
+  // Collect entities and parameters
+  for (const { location, entities, rootExtensions } of documents) {
     for (const entity of entities) {
       file.addImport({ name: entity.name, alias: entity.importAs, path: location })
+    }
+    // Import parameters definitions for root extensions
+    for (const { name } of parametersFromFields({ fields: rootExtensions })) {
+      file.addImport({ name, path: location })
     }
   }
 
@@ -134,7 +183,12 @@ export const printResults = ({ documents, rootOutputPath }: PrintResultsParams):
   }, [] as RootExtension[])
 
   const querySection = file.section('Root')
-  querySection.addInterface(rootExtensionsToInterface({ name: 'Root', extensions: rootExtensions }))
+  querySection.addInterface(
+    fieldsToInterface({
+      name: 'Root',
+      fields: rootExtensions,
+    })
+  )
 
   // Add entity aliases
   const aliases = file.section('Aliases')

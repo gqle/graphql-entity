@@ -2,7 +2,7 @@
 
 exports[`compiler basic regression test: file contents 1`] = `
 "// @gqle/generated
-import { Maybe, Awaitable } from \\"graphql-entity/prelude\\";
+import { Awaitable, Maybe, Resolvable } from \\"graphql-entity/prelude\\";
 
 
 /*
@@ -10,9 +10,8 @@ import { Maybe, Awaitable } from \\"graphql-entity/prelude\\";
  */
 
 export interface User {
-  name: string;
+  name: Resolvable<string>;
 }
-
 
 /*
  * Entities
@@ -21,21 +20,19 @@ export interface User {
 export type UserEntity = User
 
 
-
 /*
  * RootExtensions
  */
 
 export interface RootExtensions {
-  getUser(): Awaitable<User>;
+  getUser: Resolvable<User>;
 }
-
 "
 `;
 
 exports[`compiler basic regression test: file contents 2`] = `
 "// @gqle/generated
-import { Awaitable, Maybe } from \\"graphql-entity/prelude\\";
+import { Awaitable, Maybe, Resolvable } from \\"graphql-entity/prelude\\";
 import { createEntityServer as baseCreateEntityServer } from \\"graphql-entity\\";
 import { User as User } from \\"entity\\";
 
@@ -48,15 +45,13 @@ export interface Entities {
   User: User;
 }
 
-
 /*
  * Root
  */
 
 export interface Root {
-  getUser(): Awaitable<User>;
+  getUser: Resolvable<User>;
 }
-
 
 /*
  * Aliases
@@ -64,14 +59,12 @@ export interface Root {
 
 export type RootEntity = Root
 
-
 /*
  * Server
  */
 
 export const createEntityServer = (opts: { root: RootEntity }) =>
   baseCreateEntityServer<RootEntity>(opts);
-
 "
 `;
 
@@ -81,35 +74,32 @@ exports[`compiler basic regression test: file path 2`] = `"/"`;
 
 exports[`compiler root extensions: file contents 1`] = `
 "// @gqle/generated
-import { Maybe, Awaitable } from \\"graphql-entity/prelude\\";
+import { Awaitable, Maybe, Resolvable } from \\"graphql-entity/prelude\\";
 
 
 /*
  * Definitions
  */
 
-
 /*
  * Entities
  */
-
 
 /*
  * RootExtensions
  */
 
 export interface RootExtensions {
-  getString(): Awaitable<string>;
-  setString(): Awaitable<string>;
-  onString(): Awaitable<string>;
+  getString: Resolvable<string>;
+  setString: Resolvable<string>;
+  onString: Resolvable<string>;
 }
-
 "
 `;
 
 exports[`compiler root extensions: file contents 2`] = `
 "// @gqle/generated
-import { Awaitable, Maybe } from \\"graphql-entity/prelude\\";
+import { Awaitable, Maybe, Resolvable } from \\"graphql-entity/prelude\\";
 import { createEntityServer as baseCreateEntityServer } from \\"graphql-entity\\";
 
 
@@ -120,17 +110,15 @@ import { createEntityServer as baseCreateEntityServer } from \\"graphql-entity\\
 export interface Entities {
 }
 
-
 /*
  * Root
  */
 
 export interface Root {
-  getString(): Awaitable<string>;
-  setString(): Awaitable<string>;
-  onString(): Awaitable<string>;
+  getString: Resolvable<string>;
+  setString: Resolvable<string>;
+  onString: Resolvable<string>;
 }
-
 
 /*
  * Aliases
@@ -138,14 +126,12 @@ export interface Root {
 
 export type RootEntity = Root
 
-
 /*
  * Server
  */
 
 export const createEntityServer = (opts: { root: RootEntity }) =>
   baseCreateEntityServer<RootEntity>(opts);
-
 "
 `;
 

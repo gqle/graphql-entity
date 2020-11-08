@@ -3,6 +3,7 @@ import { DocumentNode } from 'graphql/language'
 import { AbsolutePath } from '../lib/path'
 import { EntityDocument } from './types'
 import { Entity, Enum, RootExtension } from './repr'
+import { Input } from './repr/Input'
 
 export interface CompileParams {
   schema?: GraphQLSchema
@@ -23,6 +24,7 @@ export const compile = async ({
   for (const { document, location } of sources) {
     const entities: Entity[] = []
     const enums: Enum[] = []
+    const inputs: Input[] = []
     const rootExtensions: RootExtension[] = []
 
     for (const definition of document.definitions) {
@@ -36,6 +38,9 @@ export const compile = async ({
         case 'EnumTypeDefinition':
           enums.push(Enum.fromEnum(definition))
           break
+        case 'InputObjectTypeDefinition':
+          inputs.push(Input.fromInputObjectType(definition))
+          break
         default: {
           // TODO: Handle other definitions
         }
@@ -45,6 +50,7 @@ export const compile = async ({
     documents.push({
       entities,
       enums,
+      inputs,
       location,
       rootExtensions,
     })

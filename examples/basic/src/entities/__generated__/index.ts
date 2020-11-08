@@ -1,5 +1,5 @@
 // @gqle/generated
-import { Maybe } from "graphql-entity/prelude";
+import { Awaitable, Maybe, Resolvable } from "graphql-entity/prelude";
 
 
 /*
@@ -7,13 +7,12 @@ import { Maybe } from "graphql-entity/prelude";
  */
 
 export interface Query {
-  _isExtended: Maybe<boolean>;
+  _isExtended: Resolvable<Maybe<boolean>>;
 }
 
 export interface Mutation {
-  _isExtended: Maybe<boolean>;
+  _isExtended: Resolvable<Maybe<boolean>>;
 }
-
 
 /*
  * Entities
@@ -23,5 +22,4 @@ export type QueryEntity = Query
 
 
 export type MutationEntity = Mutation
-
 

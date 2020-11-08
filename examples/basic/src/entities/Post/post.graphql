@@ -2,6 +2,14 @@ type Post {
   author: User!
 }
 
+input CreatePostAuthorInput {
+  name: String!
+}
+
 extend type Query {
   randomPost: Post
+}
+
+extend type Mutation {
+  createPost(author: CreatePostAuthorInput!): Post
 }
