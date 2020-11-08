@@ -2,7 +2,7 @@ const path = require('path')
 const parseArgs = require('minimist')
 const { exec } = require('child-process-promise')
 
-const publicPackages = ['graphql-entity']
+const publicPackages = ['express', 'graphql-entity']
 const verdaccioRegistryUrl = 'http://localhost:4873'
 
 const { dry, verdaccio: isLocal } = parseArgs(process.argv.slice(2), {
