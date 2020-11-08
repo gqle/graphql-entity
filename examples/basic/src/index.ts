@@ -1,7 +1,7 @@
 import { server } from './server'
 
 const main = async () => {
-  const { data, errors } = await server.query('query { randomPost { author { name } } }')
+  const { data, errors } = await server.run('query { randomPost { author { name } } }')
 
   console.log({ data, errors })
 }

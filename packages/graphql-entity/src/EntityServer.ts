@@ -19,7 +19,7 @@ export class EntityServer<TRoot = any> {
     this.root = root
   }
 
-  async query(source: string) {
+  async run(source: string) {
     return graphql(this.schema, source, this.root)
   }
 }
