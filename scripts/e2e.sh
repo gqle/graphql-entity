@@ -25,7 +25,13 @@ yarn run build
 # Login and publish packages locally
 (cd && npx npm-auth-to-token@1.0.0 -u user -p password -e user@example.com -r "$custom_registry_url")
 
+./scripts/exec.sh npm unpublish --force
 ./scripts/exec.sh npm publish
+
+# Remove the yarn workspace so that the install hits the registry
+rm package.json
+rm yarn.lock
+rm -rf node_modules
 
 # Create a test application
 mkdir test
@@ -42,12 +48,13 @@ cd test
 
 # Install dependencies from the local instance
 yarn install
+yarn add typescript
 
 # Run graphql-entity compilation
 yarn compile
 
 # Ensure build output works
-node ../node_modules/.bin/tsc -p tsconfig.json
+node ./node_modules/.bin/tsc -p tsconfig.json
 
 # Restore the original NPM and Yarn registry URLs
 npm set registry "$original_npm_registry_url"

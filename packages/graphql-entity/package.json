@@ -14,9 +14,13 @@
   },
   "files": [
     "/bin",
+    "/dist/*",
+    "/index.js",
+    "/index.d.ts",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json",
-    "/dist/*"
+    "/prelude.js",
+    "/prelude.d.ts"
   ],
   "scripts": {
     "test": "echo NO TESTS"
