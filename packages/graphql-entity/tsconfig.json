@@ -7,6 +7,5 @@
     "outDir": "dist",
     "rootDir": "."
   },
-  "include": ["cli/**/*", "compiler/**/*", "lib/**/*", "runtime/**/*"],
   "exclude": ["dist", "./*.d.ts"]
 }
