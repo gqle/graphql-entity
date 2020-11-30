@@ -1,0 +1,28 @@
+{
+  "name": "@gqle/express",
+  "version": "0.0.1",
+  "author": "Jason Nall <jsonnull@gmail.com>",
+  "license": "MIT",
+  "bugs": "https://github.com/gqle/graphql-entity/issues",
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "main": "dist/",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/npm-shrinkwrap.json",
+    "/dist/*"
+  ],
+  "scripts": {
+    "test": "echo NO TESTS"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@types/express": "4.17.8",
+    "@types/node": "14.14.6"
+  },
+  "peerDependencies": {
+    "graphql-entity": "0.0.1"
+  }
+}

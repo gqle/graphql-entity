@@ -17,10 +17,11 @@
     "typescript": "4.0.2"
   },
   "scripts": {
+    "prebuild": "rm -rf packages/*/dist",
     "build": "tsc -b packages/* examples/*",
     "watch": "tsc -b packages/* examples/* --watch",
     "test": "jest --config scripts/jest/jest.config.js",
     "test:watch": "jest --watch --config scripts/jest/jest.config.js",
-    "publish:local": "node ./scripts/publish.js"
+    "publish:local": "node ./scripts/release/publish.js --verdaccio"
   }
 }

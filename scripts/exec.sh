@@ -1,6 +1,7 @@
 #!/bin/bash
 
 packages=(
+  "express"
   "graphql-entity"
 )
 
