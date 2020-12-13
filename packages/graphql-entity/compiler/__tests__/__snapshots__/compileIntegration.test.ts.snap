@@ -34,7 +34,7 @@ exports[`compiler basic regression test: file contents 2`] = `
 "// @gqle/generated
 import { Awaitable, Maybe, Resolvable } from \\"graphql-entity/prelude\\";
 import { createEntityServer as baseCreateEntityServer } from \\"graphql-entity\\";
-import { User as User } from \\"entity\\";
+import { User as User } from \\"./entity\\";
 
 
 /*
