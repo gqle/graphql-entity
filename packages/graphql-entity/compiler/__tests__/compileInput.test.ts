@@ -125,7 +125,7 @@ describe('input types', () => {
     expect(file.writeImports()).toMatchInlineSnapshot(`
       "import { Awaitable, Maybe, Resolvable } from \\"graphql-entity/prelude\\";
       import { createEntityServer as baseCreateEntityServer } from \\"graphql-entity\\";
-      import { NeedsUserParameters } from \\"entity\\";
+      import { NeedsUserParameters } from \\"./entity\\";
       "
     `)
     expect(file.section('Root').write()).toMatchInlineSnapshot(`

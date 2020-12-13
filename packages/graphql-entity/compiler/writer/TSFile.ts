@@ -1,11 +1,11 @@
-import { dirname } from 'path'
-import { AbsolutePath } from '../../lib/path'
+import { dirname, sep as PLATFORM_SEP } from 'path'
+import { AbsolutePath, RelativePath } from '../../lib/path'
 import { unique } from '../utils/unique'
 import { capsToPascalCase } from '../utils/capsToPascalCase'
 import { withoutLastNewline } from '../../lib/string'
 
 export interface TSImport {
-  path: AbsolutePath | string
+  path: AbsolutePath | RelativePath | string
   name: string
   isDefault?: boolean
   alias?: string
@@ -155,6 +155,10 @@ export class TSFile {
 
   private importPath(path: AbsolutePath): string {
     let result = AbsolutePath.from(dirname(this.filepath.path)).pathTo(path).path
+
+    if (!result.startsWith('../')) {
+      result = `.${PLATFORM_SEP}${result}`
+    }
 
     if (result.endsWith('.ts')) {
       result = result.slice(0, -3)

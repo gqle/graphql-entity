@@ -7,11 +7,11 @@ const _defaultSchema = /* GraphQL */ `
 `
 
 describe('compiler', () => {
-  const subject = async (source: string) => {
-    return getCompilationFiles([['/entity.ts', source]])
-  }
-
   test('basic regression test', async () => {
+    const subject = async (source: string) => {
+      return getCompilationFiles([['/entity.ts', source]])
+    }
+
     const entitySource = /* GraphQL */ `
       type User {
         name: String!
@@ -31,6 +31,10 @@ describe('compiler', () => {
   })
 
   test('root extensions', async () => {
+    const subject = async (source: string) => {
+      return getCompilationFiles([['/entity.ts', source]])
+    }
+
     const entitySource = /* GraphQL */ `
       extend type Query {
         getString: String!
@@ -51,5 +55,33 @@ describe('compiler', () => {
       expect(file.filepath.path).toMatchSnapshot('file path')
       expect(file.write()).toMatchSnapshot('file contents')
     }
+  })
+
+  // Import of `/entity.ts` from `/` should be `./entity`
+  test('relative entity imports', async () => {
+    const subject = async (source: string) => {
+      return getCompilationFiles([['/entity.ts', source]])
+    }
+
+    const entitySource = /* GraphQL */ `
+      type User {
+        name: String!
+      }
+    `
+
+    const { files } = await subject(entitySource)
+
+    const rootFile = files.find((f) => f.filepath.path === '/')
+    expect(rootFile?.writeImports()).toMatchInlineSnapshot(`
+      "import { Awaitable, Maybe, Resolvable } from \\"graphql-entity/prelude\\";
+      import { createEntityServer as baseCreateEntityServer } from \\"graphql-entity\\";
+      import { User as User } from \\"./entity\\";
+      "
+    `)
+    const entityFile = files.find((f) => f.filepath.path === '/entity.ts')
+    expect(entityFile?.writeImports()).toMatchInlineSnapshot(`
+      "import { Awaitable, Maybe, Resolvable } from \\"graphql-entity/prelude\\";
+      "
+    `)
   })
 })
