@@ -36,14 +36,9 @@ describe('input types', () => {
 
   test('references input types as arguments to queries', async () => {
     const entitySource = /* GraphQL */ `
-      input User {
-        name: String!
-        age: Int!
-      }
-
       extend type Query {
         needsNothing: Boolean!
-        needsUser(user: User!): Boolean!
+        needsUser(name: String!, age: Int!): Boolean!
       }
     `
 
@@ -57,7 +52,8 @@ describe('input types', () => {
        */
 
       export interface NeedsUserParameters {
-        user: User;
+        name: string;
+        age: number;
       }
 
       export interface RootExtensions {

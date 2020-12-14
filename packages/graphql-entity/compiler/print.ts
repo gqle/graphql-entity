@@ -31,7 +31,7 @@ const findDocumentContainingType = ({
 const parametersInterface = ({ field }: { field: Field }): TSInterface => {
   return {
     name: `${capitalizeInitial(field.name)}Parameters`,
-    values: field.parameters.map(([name, type]) => [name, type.getName()]),
+    values: field.parameters.map(([name, type]) => [name, type.print()]),
   }
 }
 
