@@ -25,7 +25,14 @@ export class EntityServer<TRoot = any> {
   }
 
   async run({ query, variables }: RunQueryOptions) {
-    return graphql(this.schema, query, this.root, null, variables)
+    return graphql({
+      schema: this.schema,
+      source: query,
+      rootValue: this.root,
+      contextValue: null,
+      variableValues: variables,
+      // TODO: Allow overriding the default `fieldResolver` here
+    })
   }
 }
 
