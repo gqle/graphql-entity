@@ -1,6 +1,6 @@
 // @gqle/generated
 import { Awaitable, Maybe, Resolvable } from "graphql-entity/prelude";
-import { User } from "../../User/__generated__/index";
+import { User } from "../User/user.generated";
 
 
 /*

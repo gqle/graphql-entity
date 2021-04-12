@@ -1,8 +1,8 @@
 module.exports = {
   documents: './src/**/*.graphql',
   // Default: './__generated__/'
-  rootOutputPath: './src/__generated__/index.ts',
+  rootOutputPath: './src/gqle.generated.ts',
   // Valid dynamic patterns: dirpath, dirname, filename
   // Default: '[dirpath]/__generated__/',
-  outputPath: '[dirpath]/__generated__/index.ts',
+  outputPath: '[dirpath]/[filename].generated.ts',
 }

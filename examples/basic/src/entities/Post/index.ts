@@ -1,4 +1,4 @@
-import { PostEntity } from './__generated__'
+import { PostEntity } from './post.generated'
 import { User } from '../User'
 
 interface PostOptions {

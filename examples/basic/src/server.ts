@@ -1,7 +1,7 @@
-import { createEntityServer, RootEntity } from './__generated__'
+import { createEntityServer, RootEntity } from './gqle.generated'
 import { Post } from './entities/Post'
 import { User } from './entities/User'
-import { CreatePostParameters } from './entities/Post/__generated__'
+import { CreatePostParameters } from './entities/Post/post.generated'
 
 export class Root implements RootEntity {
   /*
