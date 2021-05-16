@@ -4,6 +4,7 @@ export interface GqleConfigOptions {
   documents: string | string[]
   rootOutputPath: string
   outputPath: string
+  includeRootTypes?: boolean
 }
 
 export interface GqleResolvedConfig {
@@ -11,4 +12,5 @@ export interface GqleResolvedConfig {
   rootOutputPath: AbsolutePath
   outputPath: AbsolutePath
   configDir: AbsolutePath
+  includeRootTypes: boolean
 }

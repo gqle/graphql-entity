@@ -13,7 +13,8 @@ export const resolveConfig = (): GqleResolvedConfig => {
 
   // Resolve paths in the config relative to it
   const configDir = AbsolutePath.from(path.dirname(configPath))
-  const configPathToAbsolute = (path: string): AbsolutePath => configDir.resolveTo(Path.from(path))
+  const configPathToAbsolute = (ambiguousPath: string): AbsolutePath =>
+    configDir.resolveTo(Path.from(ambiguousPath))
 
   const config: GqleConfigOptions = require(configPath)
 
@@ -26,6 +27,7 @@ export const resolveConfig = (): GqleResolvedConfig => {
     documents,
     outputPath: configPathToAbsolute(config.outputPath),
     rootOutputPath: configPathToAbsolute(config.rootOutputPath),
+    includeRootTypes: config.includeRootTypes ?? true,
     configDir,
   }
 }

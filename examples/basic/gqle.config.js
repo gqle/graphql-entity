@@ -5,4 +5,5 @@ module.exports = {
   // Valid dynamic patterns: dirpath, dirname, filename
   // Default: '[dirpath]/__generated__/',
   outputPath: '[dirpath]/[filename].generated.ts',
+  includeRootTypes: true,
 }

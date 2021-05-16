@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@graphql-tools/graphql-file-loader": "6.0.12",
-    "@graphql-tools/load": "6.0.12",
+    "@graphql-tools/load": "6.2.8",
     "@graphql-tools/schema": "6.1.0",
     "@oclif/command": "1.8.0",
     "@oclif/config": "1.17.0",

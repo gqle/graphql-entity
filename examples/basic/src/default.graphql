@@ -1,7 +1,0 @@
-type Query {
-  _isExtended: Boolean
-}
-
-type Mutation {
-  _isExtended: Boolean
-}
