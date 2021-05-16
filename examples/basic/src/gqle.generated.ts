@@ -1,9 +1,9 @@
 // @gqle/generated
 import { Awaitable, Maybe, Resolvable } from "graphql-entity/prelude";
 import { createEntityServer as baseCreateEntityServer } from "graphql-entity";
+import { Query as _Query, Mutation as _Mutation } from "./default.generated";
 import { Post as Post, CreatePostParameters } from "./entities/Post/post.generated";
 import { User as User } from "./entities/User/user.generated";
-import { Query as _Query, Mutation as _Mutation } from "./entities/default.generated";
 
 
 /*
@@ -11,10 +11,10 @@ import { Query as _Query, Mutation as _Mutation } from "./entities/default.gener
  */
 
 export interface Entities {
-  Post: Post;
-  User: User;
   Query: _Query;
   Mutation: _Mutation;
+  Post: Post;
+  User: User;
 }
 
 /*
